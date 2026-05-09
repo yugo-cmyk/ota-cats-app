@@ -1,0 +1,57 @@
+<%= form_with(model: cat, local: true, style: "max-width: 600px; margin: 0 auto;") do |f| %>
+  <div style="margin-bottom: 15px;">
+    <%= f.label :name, "猫の名前" %><br>
+    <%= f.text_field :name, style: "width: 100%; padding: 8px;" %>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <%= f.label :ear_status, "耳の状態" %><br>
+    <%= f.select :ear_status, [["なし", "none"], ["右(♂)", "right"], ["左(♀)", "left"]], {}, style: "width: 100%; padding: 8px;" %>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <%= f.label :image, "写真 (HEIC対応)" %><br>
+    <%= f.file_field :image %>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <p><strong>場所を指定（写真に位置情報があれば自動入力されますが、地図をクリックして修正も可能です）</strong></p>
+    <div id="form-map" style="width: 100%; height: 300px; border: 1px solid #ccc; border-radius: 8px;"></div>
+    <%= f.hidden_field :latitude, id: "cat_lat" %>
+    <%= f.hidden_field :longitude, id: "cat_lng" %>
+  </div>
+
+  <%= f.submit "登録する", style: "background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; width: 100%;" %>
+<% end %>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.configuration.google_maps_api_key %>"></script>
+<script>
+  function initFormMap() {
+    const defaultLoc = { lat: 35.5614, lng: 139.7161 };
+    const map = new google.maps.Map(document.getElementById("form-map"), {
+      center: defaultLoc,
+      zoom: 15
+    });
+
+    let marker = new google.maps.Marker({
+      map: map,
+      draggable: true
+    });
+
+    // 地図をクリックした時にピンを移動し、座標を記録
+    map.addListener("click", (e) => {
+      const lat = e.latLng.lat();
+      const lng = e.latLng.lng();
+      marker.setPosition({ lat, lng });
+      document.getElementById("cat_lat").value = lat;
+      document.getElementById("cat_lng").value = lng;
+    });
+
+    // ピンをドラッグした時も記録
+    marker.addListener("dragend", (e) => {
+      document.getElementById("cat_lat").value = e.latLng.lat();
+      document.getElementById("cat_lng").value = e.latLng.lng();
+    });
+  }
+  window.onload = initFormMap;
+</script>

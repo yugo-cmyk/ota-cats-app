@@ -1,0 +1,48 @@
+<div style="width: 100%; height: 100vh; position: relative;">
+  <div style="position: absolute; top: 10px; left: 10px; z-index: 10; display: flex; gap: 10px;">
+    <%= link_to "＋ 新しい猫を登録", new_cat_path, style: "background: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);" %>
+    <%= link_to "リスト一覧を表示", cats_path, style: "background: white; color: #333; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; border: 1px solid #ccc; box-shadow: 0 2px 5px rgba(0,0,0,0.2);" %>
+  </div>
+  <div id="full-map" style="width: 100%; height: 100%;"></div>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.configuration.google_maps_api_key %>"></script>
+<script>
+  function initMap() {
+    const map = new google.maps.Map(document.getElementById("full-map"), {
+      center: { lat: 35.5614, lng: 139.7161 },
+      zoom: 14
+    });
+
+    <% @cats.each do |cat| %>
+      <% if cat.latitude && cat.longitude %>
+        (function() {
+          // ピンの色分け
+          let pinColor = "green"; 
+          <% if cat.ear_status == "right" %> pinColor = "blue"; 
+          <% elsif cat.ear_status == "left" %> pinColor = "red"; 
+          <% end %>
+          
+          const marker = new google.maps.Marker({
+            position: { lat: <%= cat.latitude %>, lng: <%= cat.longitude %> },
+            map: map,
+            icon: `http://maps.google.com/mapfiles/ms/icons/${pinColor}-dot.png`,
+            title: "<%= j cat.name %>"
+          });
+
+          const infoWindow = new google.maps.InfoWindow({
+            content: `<div style="padding: 10px;">
+                        <strong><%= j cat.name %></strong><br>
+                        <a href="/cats/<%= cat.id %>" style="color: #007bff; text-decoration: none; font-weight: bold;">詳細を見る</a>
+                      </div>`
+          });
+
+          marker.addListener("click", () => {
+            infoWindow.open(map, marker);
+          });
+        })();
+      <% end %>
+    <% end %>
+  }
+  window.onload = initMap;
+</script>

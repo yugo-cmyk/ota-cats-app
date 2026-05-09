@@ -1,0 +1,66 @@
+<div style="padding: 20px; font-family: sans-serif; max-width: 1200px; margin: 0 auto;">
+  <h1 style="border-bottom: 3px solid #28a745; padding-bottom: 10px;">大田区 地域猫活動マップ</h1>
+
+  <div style="margin: 20px 0;">
+    <%= link_to "＋ 新しい猫を登録する", new_cat_path, style: "background: #28a745; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" %>
+  </div>
+
+  <div id="main-map" style="width: 100%; height: 500px; border-radius: 15px; border: 2px solid #ddd; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"></div>
+
+  <h2 style="border-left: 5px solid #28a745; padding-left: 15px; margin-bottom: 20px;">登録猫リスト</h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;">
+    <% @cats.each do |cat| %>
+      <div style="border: 1px solid #eee; border-radius: 12px; overflow: hidden; background: white;">
+        <% if cat.image.attached? %>
+          <%# HEICをブラウザで見れるJPEGに変換して表示 %>
+          <%= image_tag cat.image.variant(resize_to_limit: [500, 500], format: :jpg), style: "width: 100%; height: 200px; object-fit: cover;" %>
+        <% end %>
+        <div style="padding: 15px;">
+          <h3 style="margin: 0;"><%= cat.name %></h3>
+          <p style="color: #666;">
+            耳：<strong><%= cat.ear_status == "right" ? "右(♂)" : (cat.ear_status == "left" ? "左(♀)" : "なし") %></strong>
+          </p>
+          <%= link_to "詳細・個別地図を見る", cat, style: "display: block; text-align: center; padding: 10px; background: #007bff; color: white; text-decoration: none; border-radius: 6px;" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.configuration.google_maps_api_key %>"></script>
+<script>
+  function initMap() {
+    const map = new google.maps.Map(document.getElementById("main-map"), {
+      center: { lat: 35.5614, lng: 139.7161 },
+      zoom: 13
+    });
+
+    <% @cats.each do |cat| %>
+      <% if cat.latitude && cat.longitude %>
+        (function() {
+          // 性別ピンの色分け
+          let color = "green";
+          <% if cat.ear_status == "right" %> color = "blue";
+          <% elsif cat.ear_status == "left" %> color = "red";
+          <% end %>
+
+          const marker = new google.maps.Marker({
+            position: { lat: <%= cat.latitude %>, lng: <%= cat.longitude %> },
+            map: map,
+            icon: `http://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
+            title: "<%= j cat.name %>"
+          });
+
+          const infoWindow = new google.maps.InfoWindow({
+            content: '<strong><%= j cat.name %></strong><br><a href="<%= cat_path(cat) %>">詳細を表示</a>'
+          });
+
+          marker.addListener("click", () => {
+            infoWindow.open(map, marker);
+          });
+        })();
+      <% end %>
+    <% end %>
+  }
+  window.onload = initMap;
+</script>
