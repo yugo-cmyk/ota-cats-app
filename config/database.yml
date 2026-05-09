@@ -13,5 +13,5 @@ test:
 
 production:
   <<: *default
-  # Render環境では、再起動でデータが消えないよう特別な場所に保存します
+  # Renderの永続ディレクトリを指定
   database: /opt/render/project/src/storage/production.sqlite3

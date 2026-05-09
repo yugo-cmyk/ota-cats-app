@@ -11,6 +11,11 @@ module OtaCatsApp
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
 
+    # --- ここから追加 ---
+    # Renderの環境変数からGoogle Maps APIキーを読み込む設定
+    config.google_maps_api_key = ENV['GOOGLE_MAPS_API_KEY']
+    # --- ここまで追加 ---
+
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
