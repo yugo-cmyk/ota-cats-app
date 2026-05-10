@@ -1,4 +1,4 @@
 class ApplicationController < ActionController::Base
-  # セキュリティチェックをスキップする魔法
-  skip_forgery_protection
+  # 本番環境でのセキュリティチェックを適切に設定します
+  protect_from_forgery with: :exception, unless: -> { Rails.env.production? }
 end

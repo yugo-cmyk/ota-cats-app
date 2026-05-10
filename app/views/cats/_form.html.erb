@@ -13,6 +13,11 @@
     <%= f.label :image, "写真 (HEIC対応)" %><br>
     <%= f.file_field :image %>
   </div>
+  
+  <div style="margin-bottom: 15px;">
+    <%= f.label :description, "特徴・コメント" %><br>
+    <%= f.text_area :description, rows: 4, style: "width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;", placeholder: "毛色や性格、気づいたことなど" %>
+  </div>
 
   <div style="margin-bottom: 15px;">
     <p><strong>場所を指定（写真に位置情報があれば自動入力されますが、地図をクリックして修正も可能です）</strong></p>
