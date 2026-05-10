@@ -20,3 +20,4 @@ end
 gem "mini_magick", "~> 5.3"
 
 gem "image_processing", "~> 1.14"
+gem 'pg'
