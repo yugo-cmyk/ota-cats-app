@@ -40,7 +40,8 @@ end
 
   def destroy
     @cat.destroy
-    redirect_to cats_url, notice: "削除しました。"
+    # status: :see_other を追加することで、Turbo環境での動作が安定します
+    redirect_to cats_url, notice: "削除しました。", status: :see_other
   end
 
   private
