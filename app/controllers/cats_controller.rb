@@ -21,12 +21,13 @@ class CatsController < ApplicationController
   end
 
   def create
-    @cat = Cat.new(cat_params)
-    if @cat.save
-      redirect_to @cat, notice: "猫を登録しました！"
-    else
-      render :new, status: :unprocessable_entity
-    end
+  @cat = Cat.new(cat_params)
+  if @cat.save
+    redirect_to @cat, notice: "登録に成功しました！"
+  else
+    # ↓ この一行が重要です！エラー内容をログに書き出します
+    Rails.logger.error "【保存失敗の原因】: #{@cat.errors.full_messages.join(', ')}"
+    render :new, status: :unprocessable_entity
   end
 
   def update
