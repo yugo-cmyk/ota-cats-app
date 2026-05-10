@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%# --- ここに挿入します --- %>
+    <%= favicon_link_tag 'cat_icon.png' %>
+
+    <%= stylesheet_link_tag :app %>
     <%= stylesheet_link_tag :app %>
 
     <%# --- Google Maps APIをここで1回だけ読み込み --- %>
