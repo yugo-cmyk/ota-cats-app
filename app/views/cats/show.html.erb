@@ -14,10 +14,6 @@
   <div style="margin: 20px 0; display: flex; gap: 10px;">
     <%# 編集ボタン（既存） %>
     <%= link_to "情報を書き換える", edit_cat_path(@cat), style: "padding: 10px 15px; background: #eee; text-decoration: none; border-radius: 5px; color: #333;" %>
-    <%# 削除ボタン（ここに追加！） %>
-    <%= link_to "この情報を消す", cat_path(@cat), 
-                data: { turbo_method: :delete, turbo_confirm: "本当に消してもよろしいですか？" }, 
-                style: "padding: 10px 15px; background: #ff4d4d; text-decoration: none; border-radius: 5px; color: white;" %>
   </div>
 
   <hr>
