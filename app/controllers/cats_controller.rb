@@ -29,7 +29,7 @@ class CatsController < ApplicationController
     Rails.logger.error "【保存失敗の原因】: #{@cat.errors.full_messages.join(', ')}"
     render :new, status: :unprocessable_entity
   end
-
+end
   def update
     if @cat.update(cat_params)
       redirect_to @cat, notice: "情報を更新しました。"
