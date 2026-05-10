@@ -14,6 +14,8 @@ module OtaCatsApp
     # --- ここから追加 ---
     # Renderの環境変数からGoogle Maps APIキーを読み込む設定
     config.google_maps_api_key = ENV['GOOGLE_MAPS_API_KEY']
+
+    config.active_storage.analyzers = []
     # --- ここまで追加 ---
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do

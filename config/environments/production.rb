@@ -64,4 +64,8 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  # --- ここから追記 ---
+  # config/storage.yml で定義した production 設定を使用する
+  config.active_storage.service = :production
+  # --- ここまで追記 ---
 end

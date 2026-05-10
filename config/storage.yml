@@ -5,3 +5,7 @@ test:
 local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
+  # 下記を「丸ごと上書き」あるいは「追記」してください
+production:
+  service: Disk
+  root: /tmp/storage # Renderで書き込みが許可されている一時ディレクトリに変更

@@ -2,7 +2,7 @@ class Cat < ApplicationRecord
   has_one_attached :image
 
   # 保存する前に、写真から位置情報を抜き出す処理（HEIC対応版）
-  after_commit :process_image_and_gps, on: [:create, :update] #
+  # after_commit :process_image_and_gps, on: [:create, :update] #
 
   private
 
