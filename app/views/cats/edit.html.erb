@@ -9,4 +9,14 @@
 <div>
   <%= link_to "Show this cat", @cat %> |
   <%= link_to "Back to cats", cats_path %>
+
+  <%# --- ここから追記 --- %>
+  <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd;">
+    <p style="color: #666; font-size: 0.8em;">管理用操作：</p>
+    <%= button_to "このねこの情報を完全に削除する", @cat, 
+                  method: :delete, 
+                  form: { data: { turbo_confirm: "本当に削除しますか？\nこの操作は取り消せません。" } },
+                  style: "background: none; border: none; color: #ff4d4d; cursor: pointer; padding: 0; text-decoration: underline; font-size: 0.9em;" %>
+  </div>
+  <%# --- ここまで追記 --- %
 </div>
